@@ -1,7 +1,4 @@
-﻿using System.CodeDom.Compiler;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿
 using UnityEngine;
 
 public class Hacker : MonoBehaviour
@@ -50,16 +47,10 @@ public class Hacker : MonoBehaviour
 
     void RunMainMenu(string input)
     {
-        if (input == "1")
+        bool isValidLevel = (input == "1" || input == "2");
+        if(isValidLevel)
         {
-            level = 1;
-            password = level1Passwords[2];  //to make random selection later
-            StartGame();
-        }
-        else if (input == "2")
-        {
-            level = 2;
-            password = level2Passwords[3];
+            level = int.Parse(input);
             StartGame();
         }
         else
@@ -71,7 +62,21 @@ public class Hacker : MonoBehaviour
     void StartGame()
     {
         currentScreen = Screen.Password;
-        Terminal.WriteLine("You choose level " + level);
+        Terminal.ClearScreen();
+        switch(level)
+        {
+            case 1:
+                int index1 = Random.Range(0, level1Passwords.Length);
+                password = level1Passwords[index1];
+                break;
+            case 2:
+                int index2 = Random.Range(0, level2Passwords.Length);
+                password = level2Passwords[index2];
+                break;
+            default:
+                Debug.LogError("Invalid level");
+                break;
+        }
         Terminal.WriteLine("Please enter your password: ");
     }
 
@@ -84,7 +89,6 @@ public class Hacker : MonoBehaviour
         else
         {
             Terminal.WriteLine("Sorry, Wrong Password!");
-            StartGame();
         }
     }
 
