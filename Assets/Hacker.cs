@@ -1,22 +1,26 @@
 ﻿using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class Hacker : MonoBehaviour
 {
     //Game State
     int level;
+
+    enum Screen { MainMenu, Password, Win };
+    Screen currentScreen;
     // Start is called before the first frame update
     void Start()
     {
-        ShowMainMenu("Hello Abhi");
+        ShowMainMenu();
     }
 
-    void ShowMainMenu(string greeting)
+    void ShowMainMenu()
     {
+        currentScreen = Screen.MainMenu;
         Terminal.ClearScreen();
-        Terminal.WriteLine(greeting);
         Terminal.WriteLine("What would you like to hack into?");
         Terminal.WriteLine("Press 1 for local library");
         Terminal.WriteLine("Press 2 for Polic Station");
@@ -27,9 +31,18 @@ public class Hacker : MonoBehaviour
     {
         if(input == "menu")
         {
-            ShowMainMenu(" ");
+            ShowMainMenu();
         }
-        else if(input == "1")
+        else if(currentScreen == Screen.MainMenu)
+        {
+            RunMainMenu(input);
+        }
+        
+    }
+
+    void RunMainMenu(string input)
+    {
+        if (input == "1")
         {
             level = 1;
             StartGame();
@@ -41,13 +54,16 @@ public class Hacker : MonoBehaviour
         }
         else
         {
-            Terminal.WriteLine("Choose correct level");
+            Terminal.WriteLine("Select valid level");
         }
     }
 
     void StartGame()
     {
+        currentScreen = Screen.Password;
         Terminal.WriteLine("You choose level " + level);
+        Terminal.WriteLine("Please enter your password: ");
+
     }
 
     // Update is called once per frame
