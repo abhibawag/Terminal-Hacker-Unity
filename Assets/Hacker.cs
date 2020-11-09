@@ -1,11 +1,12 @@
 ﻿
 using UnityEngine;
 
+
 public class Hacker : MonoBehaviour
 {
     //Game configurations
     string[] level1Passwords = { "books", "aisle", "self", "password", "font", "borrow" };
-    string[] level2Passwords = { "prisoner", "handcuffs", "holster", "unifrom", "arrest" };
+    string[] level2Passwords = { "prisoner", "handcuffs", "holster", "uniform", "arrest" };
     //Game State
     int level;
     string password;
@@ -66,12 +67,10 @@ public class Hacker : MonoBehaviour
         switch(level)
         {
             case 1:
-                int index1 = Random.Range(0, level1Passwords.Length);
-                password = level1Passwords[index1];
+                password = level1Passwords[Random.Range(0, level1Passwords.Length)];
                 break;
             case 2:
-                int index2 = Random.Range(0, level2Passwords.Length);
-                password = level2Passwords[index2];
+                password = level2Passwords[Random.Range(0, level2Passwords.Length)];
                 break;
             default:
                 Debug.LogError("Invalid level");
@@ -84,7 +83,7 @@ public class Hacker : MonoBehaviour
     {
         if (input == password)
         {
-            Terminal.WriteLine("WELL DONE!");
+            DisplayWinScreen();
         }
         else
         {
@@ -92,9 +91,41 @@ public class Hacker : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void DisplayWinScreen()
     {
-        
+        currentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        ShowLevelReward();
     }
+
+    void ShowLevelReward()
+    {
+        switch(level)
+        {
+            case 1:
+                Terminal.WriteLine("Have a book...");
+                Terminal.WriteLine(@"
+    ______
+   /     //
+  /     //
+ /_____//
+(_____(/
+"
+               );
+                break;
+            case 2:
+                Terminal.WriteLine("You got the prison key");
+                Terminal.WriteLine(@"
+ ___
+/0  \__________
+\___/-='--='--/
+"
+               );
+                break;
+            default:
+                Debug.LogError("Invalid level reached");
+                break;
+        }
+    }
+
 }
